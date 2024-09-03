@@ -1,12 +1,13 @@
 - name: package install
-  hosts: web
+  hosts: web # name of inventory file
+  become: yes #root previleges
   tasks: 
   - name: Install nginx
     ansible.builtin.package:
       name: nginx
-      state: present
+      state: present #installing present/absent
   - name: Start nginx
     ansible.builtin.service:
       name: nginx
-      state: started 
+      state: started #state: started,stopped,restart
       enabled: yes
