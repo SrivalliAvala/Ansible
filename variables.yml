@@ -1,6 +1,7 @@
 - name: variables
   hosts: web
-  vars_file: vars_file.yaml
+  vars_file: 
+  - vars_file.yaml
   vars:            # play level variables
     name1: "Srivalli"
     course: "Devops"
