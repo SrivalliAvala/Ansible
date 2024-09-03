@@ -1,0 +1,10 @@
+- name: ping the server
+  hosts: web
+  tasks: 
+  - name: print the statement
+    ansible.builtin.debug:
+      msg: "The purpose is to check the reachability of server"
+      
+  - name: ping the server
+    ansible.builtin.ping:
+
