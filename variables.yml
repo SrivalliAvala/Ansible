@@ -1,0 +1,9 @@
+- name: variables
+  hosts: web
+  vars:            # play level variables
+    name: "Srivalli"
+    course: "Devops"
+  tasks:
+  - name: Printing play level variables
+    ansible.builtin.debug:
+    msg: "My name is {{name}} and my course is {{course}}"
