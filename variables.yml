@@ -11,7 +11,7 @@
       msg: "My name is {{name1}} and my course is {{course}} duration is {{hrs}} and mode is {{mode}}"
   tasks:
   - name: Printing play level variables
-    vars:
+    vars:  #task level
       name1: "Praveen"
       course: "Python"
     ansible.builtin.debug:
