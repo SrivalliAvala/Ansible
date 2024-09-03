@@ -1,7 +1,7 @@
 - name: variables from prompt
   hosts: web
   vars_prompt:
-    - name: sname
+    - sname: sname
       prompt: please enter name
       private: false # not confidential
     - course: course
