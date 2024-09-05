@@ -1,0 +1,20 @@
+- name: Ansible data types
+  hosts: local
+  connection: local
+  vars:
+    name: srivalli
+    duration: 120
+    expense:
+    - frontend
+    - backend
+    - database
+    online_mode: True
+    tools:
+      cm : ansible
+      ci: jenkins
+      deployment: k8s
+      cloud: aws
+  tasks:
+  - name: Ansible data types
+    ansible.builtin.debug:
+      msg: "student name {{ name }} duration is: {{ duration }} online mode: {{ online_mode }} project consists of: {{ expense }} and tools are: {{ tools }}"
