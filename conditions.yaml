@@ -1,0 +1,12 @@
+- name: Ansible data types
+  hosts: local
+  connection: local
+  vars_prompt:
+    - number: number
+      prompt: Please enter the number
+      private: false
+  tasks:
+  - name: checking number greater than 20
+    ansible.builtin.debug:
+      msg: "given number is greater than 20"
+    when: number > 20
