@@ -10,3 +10,9 @@
     ansible.builtin.debug:
       msg: "given number is greater than 20"
     when: number | int > 20
+
+  - name: checking number greater than 20
+    ansible.builtin.debug:
+      msg: "given number {{name}} less than 20"
+    when: number | int <= 20
+
