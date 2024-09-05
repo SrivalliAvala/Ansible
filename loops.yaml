@@ -1,6 +1,7 @@
 - name: loops exmaple
   hosts: web
   become: yes
+  tasks:
   - name: install packages
     ansible.builtin.package:
       name: "{{ item.name }}"
