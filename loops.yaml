@@ -1,13 +1,12 @@
 - name: loops exmaple
   hosts: web
   become: yes
-  tasks:
-  - name: installing packages using loops
+  vars:
     package_list:
     - mysql
     - nginx
     - postfix
-  
+  tasks:
   - name: installing packages
     ansible.builtin.package:
     name: "{{ item }}" 
