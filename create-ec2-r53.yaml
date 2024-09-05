@@ -1,0 +1,38 @@
+- name: create ec2 and r53 using ansible
+  hosts: local
+  connection: local
+  become: yes
+  vars:
+    vpc_subnet_id: vpc-02e1ef03a93b25486
+    instance_type: t3.micro
+    security_group: sg-0372233cbe1615ef2
+    image_id: ami-09c813fb71547fc4f
+    instances:
+    - mysql
+    - frontend
+    - backend
+  zone: dev-ops81s.online
+  tasks:
+  - name: Install boto3 and botocore with pip3 module
+    pip:
+      name: 
+      - boto3
+      - botocore
+      executable: pip-3.9
+
+  - name: create ec2 instance
+    amazon.aws.ec2_instance:
+      name: "{{ item }}"
+      vpc_subnet_id: "{{ vpc_subnet_id }}"
+      instance_type: "{{ instance_type }}"
+      security_group: "{{ security_group }}"
+      image_id: "{{ image_id }}"  
+      loop: "{{ instances }}"
+      register: ec2_instances
+
+  - name: print the output
+    ansible.builtin.debug:
+      msg: "{{ ec2_instances }}"
+    
+
+      
