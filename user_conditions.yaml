@@ -5,5 +5,5 @@
   - name: check and create user
     ansible.builtin.command: id srivalli
     register: USER
-    
+    ignore_errors: True
     
