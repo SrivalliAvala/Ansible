@@ -1,0 +1,9 @@
+- name: check and create user
+  hosts: local
+  connection: local
+  tasks:
+  - name: check and create user
+    ansible.builtin.command: id srivalli
+    register: USER
+    
+    
