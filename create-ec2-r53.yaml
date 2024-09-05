@@ -63,7 +63,7 @@
 
 
 
-  - name: create ec2 and r53 records
+- name: create ec2 and r53 records
   hosts: local
   connection: local
   # assignment
@@ -76,7 +76,7 @@
     - mysql
     - backend
     - frontend
-    #zone: daws81s.online
+    zone: daws81s.online
   tasks:
   - name: ansible to install boto3 and botocore
     ansible.builtin.pip:
@@ -97,5 +97,3 @@
   - name: print the output
     ansible.builtin.debug:
       msg: "{{ ec2_instances }}"
-
-      
