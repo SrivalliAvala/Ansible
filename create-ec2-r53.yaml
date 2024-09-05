@@ -1,45 +1,11 @@
-# - name: create ec2 and r53 using ansible
-#   hosts: local
-#   connection: local
-#   become: yes
-#   vars:
-#     vpc_subnet_id: subnet-06e5d0efeb6ae3ba0
-#     instance_type: t3.micro
-#     security_group: sg-0372233cbe1615ef2
-#     image_id: ami-09c813fb71547fc4f
-#     instances:
-#     - mysql
-#     - frontend
-#     - backend
-#     zone: dev-ops81s.online
-#   tasks:
-#   - name: Install boto3 and botocore with pip3 module
-#     pip:
-#       name: 
-#       - boto3
-#       - botocore
-#       executable: pip-3.9
 
-#   - name: create ec2 instance
-#     amazon.aws.ec2_instance:
-#       name: "{{ item }}"
-#       vpc_subnet_id: "{{ vpc_subnet_id }}"
-#       instance_type: "{{ instance_type }}"
-#       security_group: "{{ security_group }}"
-#       image_id: "{{ image_id }}"  
-#     loop: "{{ instances }}"
-#     register: ec2_instances
-
-#   - name: print the output
-#     ansible.builtin.debug:
-#       msg: "{{ ec2_instances }}"
     
   # #private IP R53
   # - name: create r53 private records
   #   amazon.aws.route53:
   #     state: present
   #     zone: "{{ zone }}"
-  #     record: "{{ item.item }}.{{ zone }}" #mysql.dev-0ps81s.online
+  #     record: "{{ item.item }}.{{ zone }}" #mysql.dev-ops81s.online
   #     type: A
   #     ttl: 1
   #     value: "{{ item.instances[0].private_ip_address }}"
@@ -66,8 +32,6 @@
 - name: create ec2 and r53 records
   hosts: local
   connection: local
-  # assignment
-  # move this to vars_files
   vars:
     subnet_id: subnet-06e5d0efeb6ae3ba0 # replace with your subnet id
     sg_id: "sg-0372233cbe1615ef2"
@@ -94,6 +58,34 @@
     loop: "{{ instances }}"
     register: ec2_instances
 
-  - name: print the output
-    ansible.builtin.debug:
-      msg: "{{ ec2_instances }}"
+  # - name: print the output
+  #   ansible.builtin.debug:
+  #     msg: "{{ ec2_instances }}"
+
+  # #private IP R53
+  - name: create r53 private records
+    amazon.aws.route53:
+      state: present
+      zone: "{{ zone }}"
+      record: "{{ item.item }}.{{ zone }}" #mysql.dev-ops81s.online
+      type: A
+      ttl: 1
+      value: "{{ item.instances[0].private_ip_address }}"
+      wait: true
+      overwrite: true
+    loop: "{{ ec2_instances.results }}"
+
+  - name: create r53 public records
+    amazon.aws.route53:
+      state: present
+      zone: "{{ zone }}"
+      record: "{{ zone }}"
+      type: A
+      ttl: 1
+      value: "{{ item.instances[0].public_ip_address }}"
+      wait: true
+      overwrite: true
+    loop: "{{ ec2_instances.results }}"
+    when: item.item == "frontend"
+
+  
