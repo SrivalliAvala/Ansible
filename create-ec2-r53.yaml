@@ -11,7 +11,7 @@
     - mysql
     - frontend
     - backend
-    zone: dev-ops81s.online
+    #zone: dev-ops81s.online
   tasks:
   - name: Install boto3 and botocore with pip3 module
     pip:
@@ -34,5 +34,30 @@
     ansible.builtin.debug:
       msg: "{{ ec2_instances }}"
     
+  # #private IP R53
+  # - name: create r53 private records
+  #   amazon.aws.route53:
+  #     state: present
+  #     zone: "{{ zone }}"
+  #     record: "{{ item.item }}.{{ zone }}" #mysql.dev-0ps81s.online
+  #     type: A
+  #     ttl: 1
+  #     value: "{{ item.instances[0].private_ip_address }}"
+  #     wait: true
+  #     overwrite: true
+  #   loop: "{{ ec2_instances.results }}"
+
+  # - name: create r53 public record for frontend
+  #   amazon.aws.route53:
+  #     state: present
+  #     zone: "{{ zone }}"
+  #     record: "{{ zone }}" #dev-ops81s.online
+  #     type: A
+  #     ttl: 1
+  #     value: "{{ item.instances[0].public_ip_address }}"
+  #     wait: true
+  #     overwrite: true
+  #   loop: "{{ ec2_instances.results }}"
+  #   when: item.item == "frontend"
 
       
