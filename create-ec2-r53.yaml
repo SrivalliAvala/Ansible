@@ -27,8 +27,8 @@
       instance_type: "{{ instance_type }}"
       security_group: "{{ security_group }}"
       image_id: "{{ image_id }}"  
-      loop: "{{ instances }}"
-      register: ec2_instances
+    loop: "{{ instances }}"
+    register: ec2_instances
 
   - name: print the output
     ansible.builtin.debug:
