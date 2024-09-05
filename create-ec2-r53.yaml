@@ -3,7 +3,7 @@
   connection: local
   become: yes
   vars:
-    vpc_subnet_id: vpc-02e1ef03a93b25486
+    vpc_subnet_id: subnet-06e5d0efeb6ae3ba0
     instance_type: t3.micro
     security_group: sg-0372233cbe1615ef2
     image_id: ami-09c813fb71547fc4f
@@ -11,7 +11,7 @@
     - mysql
     - frontend
     - backend
-    #zone: dev-ops81s.online
+    zone: dev-ops81s.online
   tasks:
   - name: Install boto3 and botocore with pip3 module
     pip:
