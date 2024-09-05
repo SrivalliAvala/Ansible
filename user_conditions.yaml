@@ -15,5 +15,7 @@
 
   - name: creating user
     ansible.builtin.command: useradd srivalli
+    ansible.builtin.debug:
+      msg: "user info: {{ USER }}"
     when: USER.rc != 0
     
