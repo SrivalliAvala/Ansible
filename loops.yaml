@@ -1,0 +1,16 @@
+- name: loops exmaple
+  hosts: web
+  become: yes
+  tasks:
+  - name: installing packages using loops
+    package_list:
+    - mysql
+    - nginx
+    - postfix
+  
+  - name: installing packages
+    ansible.builtin.package:
+    name: {{ item }} 
+    state: present
+    
+
