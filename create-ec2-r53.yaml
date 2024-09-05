@@ -1,62 +1,31 @@
-
-    
-  # #private IP R53
-  # - name: create r53 private records
-  #   amazon.aws.route53:
-  #     state: present
-  #     zone: "{{ zone }}"
-  #     record: "{{ item.item }}.{{ zone }}" #mysql.dev-ops81s.online
-  #     type: A
-  #     ttl: 1
-  #     value: "{{ item.instances[0].private_ip_address }}"
-  #     wait: true
-  #     overwrite: true
-  #   loop: "{{ ec2_instances.results }}"
-
-  # - name: create r53 public record for frontend
-  #   amazon.aws.route53:
-  #     state: present
-  #     zone: "{{ zone }}"
-  #     record: "{{ zone }}" #dev-ops81s.online
-  #     type: A
-  #     ttl: 1
-  #     value: "{{ item.instances[0].public_ip_address }}"
-  #     wait: true
-  #     overwrite: true
-  #   loop: "{{ ec2_instances.results }}"
-  #   when: item.item == "frontend"
-
-
-
-
 - name: create ec2 and r53 records
   hosts: local
-  connection: local
+  connection: local 
   vars:
-    subnet_id: subnet-06e5d0efeb6ae3ba0 # replace with your subnet id
-    sg_id: "sg-0372233cbe1615ef2"
-    ami_id: "ami-09c813fb71547fc4f"
+    subnet_id: subnet-06e5d0efeb6ae3ba0 # subnet id
+    sg_id: "sg-0372233cbe1615ef2"  #securitygroup
+    ami_id: "ami-09c813fb71547fc4f" #image id
     instances:
     - mysql
     - backend
     - frontend
-    zone: dev-ops81s.online
+    zone: dev-ops81s.online    #dns
   tasks:
   - name: ansible to install boto3 and botocore
-    ansible.builtin.pip:
+    ansible.builtin.pip: #ansible--> python, Boto3 is AWS SDK for python
       name:
       - boto3
       - botocore
       executable: pip3.9
   - name: create ec2 instance
-    amazon.aws.ec2_instance:
-      name: "{{ item }}"
+    amazon.aws.ec2_instance:       #refer ec2_instances json file
+      name: "{{ item }}"        
       vpc_subnet_id: "{{ subnet_id }}"
       instance_type: "t3.micro"
       security_group: "{{ sg_id }}"
       image_id: "{{ ami_id }}"
     loop: "{{ instances }}"
-    register: ec2_instances
+    register: ec2_instances   #taking output to ec2_instances variable
 
   # - name: print the output
   #   ansible.builtin.debug:
@@ -70,10 +39,10 @@
       record: "{{ item.item }}.{{ zone }}" #mysql.dev-ops81s.online
       type: A
       ttl: 1
-      value: "{{ item.instances[0].private_ip_address }}"
+      value: "{{ item.instances[0].private_ip_address }}" #private address providing to r53  A records 
       wait: true
       overwrite: true
-    loop: "{{ ec2_instances.results }}"
+    loop: "{{ ec2_instances.results }}"   #refer json
 
   - name: create r53 public records
     amazon.aws.route53:
@@ -82,7 +51,7 @@
       record: "{{ zone }}"
       type: A
       ttl: 1
-      value: "{{ item.instances[0].public_ip_address }}"
+      value: "{{ item.instances[0].public_ip_address }}" 
       wait: true
       overwrite: true
     loop: "{{ ec2_instances.results }}"
