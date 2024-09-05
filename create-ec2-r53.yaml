@@ -11,7 +11,7 @@
     - mysql
     - frontend
     - backend
-  zone: dev-ops81s.online
+    zone: dev-ops81s.online
   tasks:
   - name: Install boto3 and botocore with pip3 module
     pip:
