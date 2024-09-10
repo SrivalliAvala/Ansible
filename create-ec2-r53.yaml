@@ -27,6 +27,10 @@
     loop: "{{ instances }}"
     register: ec2_instances   #taking output to ec2_instances variable
 
+    ami-09c813fb71547fc4f
+    sg-0372233cbe1615ef2
+    subnet-06e5d0efeb6ae3ba0
+
   # - name: print the output
   #   ansible.builtin.debug:
   #     msg: "{{ ec2_instances }}"
